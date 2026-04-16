@@ -13,10 +13,13 @@ declare module '*.vue' {
 }
 
 // 声明 Vite 环境变量类型
-interface ImportMetaEnv {
-  readonly VITE_API_BASE_URL?: string
-}
+declare global {
+  interface ImportMetaEnv {
+    readonly VITE_API_BASE_URL?: string
+  }
 
-interface ImportMeta {
-  readonly env: ImportMetaEnv
+  interface ImportMeta {
+    readonly env: ImportMetaEnv
+    readonly url: string
+  }
 }

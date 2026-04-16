@@ -11,13 +11,17 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
+    "composite": true,
 
     /* 严格模式 */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    /* 类型 */
+    "types": ["node"]
   },
   "include": ["vite.config.ts", "uno.config.ts"]
 }
