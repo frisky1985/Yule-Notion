@@ -10,6 +10,7 @@ import { fileURLToPath, URL } from 'node:url'
  * - Vue 3 SFC 支持
  */
 export default defineConfig({
+  base: '/Yule-Notion/',
   plugins: [
     vue(),
     UnoCSS(),
