@@ -64,16 +64,16 @@ function formatDate(dateStr: string): string {
 </script>
 
 <template>
-  <div class="flex-1 h-screen overflow-y-auto bg-white">
+  <div class="page-editor-container">
     <!-- 空状态 -->
     <div
       v-if="!pagesStore.currentPage"
-      class="h-full flex items-center justify-center text-gray-400"
+      class="empty-state"
     >
-      <div class="text-center">
+      <div class="empty-content">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-16 h-16 mx-auto mb-4 opacity-30"
+          class="empty-icon"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -84,31 +84,31 @@ function formatDate(dateStr: string): string {
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
           <polyline points="14 2 14 8 20 8" />
         </svg>
-        <p class="text-lg">选择或创建一个笔记开始编辑</p>
-        <p class="text-sm mt-2 opacity-60">按 Ctrl+N 快速创建</p>
+        <p class="empty-title">选择或创建一个笔记开始编辑</p>
+        <p class="empty-subtitle">按 Ctrl+N 快速创建</p>
       </div>
     </div>
 
     <!-- 编辑器内容 -->
-    <div v-else class="max-w-3xl mx-auto px-8 py-12">
+    <div v-else class="editor-content">
       <!-- 标题区域 -->
-      <div class="mb-8">
+      <div class="title-section">
         <!-- 图标 -->
-        <div class="flex items-center gap-3 mb-4">
-          <span class="text-4xl">{{ pagesStore.currentPage.icon }}</span>
+        <div class="icon-wrapper">
+          <span class="page-icon">{{ pagesStore.currentPage.icon }}</span>
         </div>
 
         <!-- 标题输入 -->
         <input
           v-model="editingTitle"
-          class="w-full text-4xl font-bold text-gray-900 placeholder-gray-300 border-none outline-none bg-transparent"
+          class="title-input"
           placeholder="无标题"
           @blur="saveTitle"
           @keydown.enter="saveTitle"
         />
 
         <!-- 元信息 -->
-        <div class="flex items-center gap-4 mt-4 text-sm text-gray-400">
+        <div class="meta-info">
           <span>创建于 {{ formatDate(pagesStore.currentPage.createdAt) }}</span>
           <span>·</span>
           <span>更新于 {{ formatDate(pagesStore.currentPage.updatedAt) }}</span>
@@ -123,3 +123,85 @@ function formatDate(dateStr: string): string {
     </div>
   </div>
 </template>
+
+<style scoped>
+.page-editor-container {
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: var(--bg-editor);
+}
+
+.empty-state {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.empty-content {
+  text-align: center;
+}
+
+.empty-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem;
+  opacity: 0.3;
+}
+
+.empty-title {
+  font-size: 1.125rem;
+}
+
+.empty-subtitle {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  opacity: 0.6;
+}
+
+.editor-content {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.title-section {
+  margin-bottom: 2rem;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.page-icon {
+  font-size: 2.25rem;
+}
+
+.title-input {
+  width: 100%;
+  font-size: 2.25rem;
+  font-weight: bold;
+  color: var(--editor-heading);
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.title-input::placeholder {
+  color: var(--text-muted);
+}
+
+.meta-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+</style>

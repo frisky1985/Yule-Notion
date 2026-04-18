@@ -13,7 +13,7 @@ import PageEditor from '@/components/editor/PageEditor.vue'
 </script>
 
 <template>
-  <div class="flex h-screen bg-gray-50">
+  <div class="dashboard-container">
     <!-- 左侧边栏 -->
     <Sidebar />
 
@@ -21,3 +21,11 @@ import PageEditor from '@/components/editor/PageEditor.vue'
     <PageEditor />
   </div>
 </template>
+
+<style scoped>
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-app);
+}
+</style>

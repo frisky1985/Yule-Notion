@@ -42,14 +42,14 @@ onUnmounted(() => {
 
 <template>
   <button
-    class="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-primary text-white text-sm font-medium transition-all duration-200 hover:bg-primary-600 active:bg-primary-700 hover:shadow-md"
+    class="new-note-button"
     @click="handleCreate"
     title="新建笔记 (Ctrl+N)"
   >
     <!-- 加号图标 -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      class="w-4 h-4"
+      class="new-note-icon"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -62,8 +62,52 @@ onUnmounted(() => {
     </svg>
     <span>新建笔记</span>
     <!-- 快捷键提示 -->
-    <span class="ml-auto text-xs opacity-60 hidden group-hover:inline">
+    <span class="shortcut-hint">
       Ctrl+N
     </span>
   </button>
 </template>
+
+<style scoped>
+.new-note-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary);
+  color: var(--text-inverse);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.new-note-button:hover {
+  background-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.new-note-button:active {
+  background-color: var(--color-primary);
+  transform: scale(0.98);
+}
+
+.new-note-icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.shortcut-hint {
+  margin-left: auto;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  display: none;
+}
+
+.new-note-button:hover .shortcut-hint {
+  display: inline;
+}
+</style>

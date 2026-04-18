@@ -24,22 +24,22 @@ function handleLogout() {
 </script>
 
 <template>
-  <aside class="w-64 h-screen bg-white border-r border-gray-200 flex flex-col">
+  <aside class="sidebar">
     <!-- Logo 区域 -->
-    <div class="h-14 flex items-center px-4 border-b border-gray-100">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-          <span class="text-white text-sm font-bold">予</span>
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <span class="logo-text">予</span>
         </div>
-        <div>
-          <span class="font-bold text-gray-900">予乐</span>
-          <span class="text-xs text-gray-400 ml-1">Yule</span>
+        <div class="brand-info">
+          <span class="brand-name">予乐</span>
+          <span class="brand-sub">Yule</span>
         </div>
       </div>
     </div>
 
     <!-- 新建笔记按钮 -->
-    <div class="p-3">
+    <div class="new-note-wrapper">
       <NewNoteButton />
     </div>
 
@@ -47,30 +47,30 @@ function handleLogout() {
     <PageList />
 
     <!-- 底部：用户信息 -->
-    <div class="border-t border-gray-100 p-3">
-      <div class="flex items-center gap-2">
+    <div class="user-section">
+      <div class="user-info">
         <!-- 用户头像 -->
-        <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm">
+        <div class="user-avatar">
           {{ authStore.user?.name?.[0] || '?' }}
         </div>
         <!-- 用户信息 -->
-        <div class="flex-1 min-w-0">
-          <p class="text-sm font-medium text-gray-900 truncate">
+        <div class="user-details">
+          <p class="user-name">
             {{ authStore.user?.name || '用户' }}
           </p>
-          <p class="text-xs text-gray-400 truncate">
+          <p class="user-email">
             {{ authStore.user?.email || '' }}
           </p>
         </div>
         <!-- 退出按钮 -->
         <button
-          class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+          class="logout-button"
           @click="handleLogout"
           title="退出登录"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="w-4 h-4"
+            class="logout-icon"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -87,3 +87,129 @@ function handleLogout() {
     </div>
   </aside>
 </template>
+
+<style scoped>
+.sidebar {
+  width: 16rem;
+  height: 100vh;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-header {
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo-icon {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-primary);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  color: var(--text-inverse);
+  font-size: 0.875rem;
+  font-weight: bold;
+}
+
+.brand-info {
+  display: flex;
+  align-items: baseline;
+}
+
+.brand-name {
+  font-weight: bold;
+  color: var(--text-primary);
+}
+
+.brand-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: 0.25rem;
+}
+
+.new-note-wrapper {
+  padding: 0.75rem;
+}
+
+.user-section {
+  border-top: 1px solid var(--border-light);
+  padding: 0.75rem;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background-color: var(--bg-hover);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logout-button {
+  padding: 0.375rem;
+  border-radius: 0.5rem;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.logout-button:hover {
+  color: var(--text-secondary);
+  background-color: var(--bg-hover);
+}
+
+.logout-icon {
+  width: 1rem;
+  height: 1rem;
+}
+</style>

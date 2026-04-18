@@ -32,16 +32,16 @@ function formatDate(dateStr: string): string {
 </script>
 
 <template>
-  <div class="flex-1 overflow-y-auto py-2">
+  <div class="page-list-container">
     <!-- 空状态 -->
     <div
       v-if="pagesStore.rootPages.length === 0"
-      class="px-4 py-8 text-center"
+      class="empty-state"
     >
-      <div class="text-gray-300 mb-3">
+      <div class="empty-icon-wrapper">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-12 h-12 mx-auto"
+          class="empty-icon"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -53,33 +53,115 @@ function formatDate(dateStr: string): string {
           <polyline points="14 2 14 8 20 8" />
         </svg>
       </div>
-      <p class="text-sm text-gray-400">
+      <p class="empty-text">
         还没有笔记<br>
         点击上方按钮创建
       </p>
     </div>
 
     <!-- 笔记列表 -->
-    <div v-else class="space-y-0.5">
+    <div v-else class="page-items-list">
       <div
         v-for="page in pagesStore.rootPages"
         :key="page.id"
-        class="group flex items-center gap-2 px-3 py-2 mx-2 rounded-lg cursor-pointer transition-colors duration-150"
+        class="page-item"
         :class="{
-          'bg-primary/10 text-primary': pagesStore.currentPageId === page.id,
-          'hover:bg-gray-100 text-gray-700': pagesStore.currentPageId !== page.id,
+          'page-item-active': pagesStore.currentPageId === page.id,
+          'page-item-inactive': pagesStore.currentPageId !== page.id,
         }"
         @click="selectPage(page.id)"
       >
         <!-- 图标 -->
-        <span class="text-base">{{ page.icon }}</span>
+        <span class="page-icon">{{ page.icon }}</span>
         <!-- 标题 -->
-        <span class="flex-1 text-sm truncate">{{ page.title }}</span>
+        <span class="page-title">{{ page.title }}</span>
         <!-- 日期 -->
-        <span class="text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
+        <span class="page-date">
           {{ formatDate(page.updatedAt) }}
         </span>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.page-list-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0;
+}
+
+.empty-state {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.empty-icon-wrapper {
+  color: var(--border-default);
+  margin-bottom: 0.75rem;
+}
+
+.empty-icon {
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto;
+}
+
+.empty-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.page-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.page-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.page-item-active {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.page-item-inactive {
+  color: var(--text-secondary);
+}
+
+.page-item-inactive:hover {
+  background-color: var(--bg-hover);
+}
+
+.page-icon {
+  font-size: 1rem;
+}
+
+.page-title {
+  flex: 1;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.page-item:hover .page-date {
+  opacity: 1;
+}
+</style>
