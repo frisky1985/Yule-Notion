@@ -57,6 +57,57 @@ const slashMenuPosition = ref({ top: 0, left: 0 })
 const slashMenuRef = ref<InstanceType<typeof SlashCommandMenu> | null>(null)
 const slashStartPos = ref<number | null>(null)
 
+// ==================== Toolbar visibility ====================
+const isToolbarVisible = ref(false)
+let hideTimeout: ReturnType<typeof setTimeout> | null = null
+let focusDebounce: ReturnType<typeof setTimeout> | null = null
+const HIDE_DELAY = 2500 // 2.5 seconds
+const editorContainer = ref<HTMLElement | null>(null)
+
+// ==================== Toolbar visibility control ====================
+function showToolbar() {
+  cancelHide()
+  isToolbarVisible.value = true
+}
+
+function scheduleHide() {
+  cancelHide()
+  hideTimeout = setTimeout(() => {
+    isToolbarVisible.value = false
+  }, HIDE_DELAY)
+}
+
+function cancelHide() {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout)
+    hideTimeout = null
+  }
+}
+
+function handleEditorFocus() {
+  if (focusDebounce) clearTimeout(focusDebounce)
+  focusDebounce = setTimeout(showToolbar, 50)
+}
+
+function handleEditorBlur() {
+  scheduleHide()
+}
+
+function handleToolbarEnter() {
+  cancelHide()
+}
+
+function handleToolbarLeave() {
+  scheduleHide()
+}
+
+function handleScroll() {
+  const scrollTop = editorContainer.value?.scrollTop || 0
+  if (scrollTop > 100 && isToolbarVisible.value) {
+    isToolbarVisible.value = false
+  }
+}
+
 // ==================== 编辑器 ====================
 const editor = useEditor({
   extensions: [
@@ -128,6 +179,10 @@ const editor = useEditor({
     checkSlashCommand(ed)
   },
   onSelectionUpdate: ({ editor: ed }) => {
+    // Show toolbar when text is selected
+    if (!ed.state.selection.empty) {
+      showToolbar()
+    }
     checkSlashCommand(ed)
   },
 })
@@ -233,6 +288,16 @@ function createEmptyContent() {
   return { type: 'doc', content: [{ type: 'paragraph', content: [] }] }
 }
 
+// Keep toolbar visible when link dialog is open
+watch(showLinkDialog, (isOpen) => {
+  if (isOpen) {
+    cancelHide()
+    isToolbarVisible.value = true
+  } else {
+    scheduleHide()
+  }
+})
+
 watch(() => props.page, (newPage) => {
   if (editor.value && newPage) {
     const cur = editor.value.getJSON()
@@ -256,13 +321,23 @@ const activeFormats = computed(() => ({
   link: editor.value?.isActive('link') || false,
 }))
 
-onBeforeUnmount(() => editor.value?.destroy())
+onBeforeUnmount(() => {
+  editor.value?.destroy()
+  if (hideTimeout) clearTimeout(hideTimeout)
+  if (focusDebounce) clearTimeout(focusDebounce)
+})
 </script>
 
 <template>
   <div class="editor-root">
-    <!-- ====== 语雀风格工具栏 ====== -->
-    <div v-if="editor" class="yuque-toolbar">
+    <!-- ====== 语雀风格工具栏 (Auto-Hide) ====== -->
+    <div 
+      v-if="editor" 
+      class="yuque-toolbar"
+      :class="{ 'toolbar-visible': isToolbarVisible }"
+      @mouseenter="handleToolbarEnter"
+      @mouseleave="handleToolbarLeave"
+    >
 
       <!-- 插入块按钮 -->
       <button
@@ -396,7 +471,13 @@ onBeforeUnmount(() => editor.value?.destroy())
     </div>
 
     <!-- ====== 编辑区 ====== -->
-    <EditorContent :editor="editor" />
+    <div ref="editorContainer" class="editor-scroll-container" @scroll="handleScroll">
+      <EditorContent 
+        :editor="editor"
+        @focus="handleEditorFocus"
+        @blur="handleEditorBlur"
+      />
+    </div>
 
     <!-- ====== 表格浮动工具栏 ====== -->
     <TableBubbleMenu v-if="editor" :editor="editor" />
@@ -423,20 +504,38 @@ onBeforeUnmount(() => editor.value?.destroy())
   position: relative;
 }
 
-/* ====== 语雀深色工具栏 ====== */
+/* Scroll container for editor */
+.editor-scroll-container {
+  position: relative;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+}
+
+/* ====== 语雀工具栏 (Auto-Hide) ====== */
 .yuque-toolbar {
   display: flex;
   align-items: center;
   gap: 1px;
   padding: 4px 8px;
   margin-bottom: 20px;
-  background: #1e1e2e;
+  background: var(--bg-editor);
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   position: sticky;
   top: 0;
   z-index: 10;
   flex-wrap: wrap;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-sm);
+  
+  /* Auto-hide animation */
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 0.25s ease-out, opacity 0.25s ease-out;
+}
+
+.yuque-toolbar.toolbar-visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 /* 分隔符 */
@@ -444,7 +543,7 @@ onBeforeUnmount(() => editor.value?.destroy())
   display: inline-block;
   width: 1px;
   height: 18px;
-  background: #3f3f5a;
+  background: var(--border-default);
   margin: 0 5px;
   flex-shrink: 0;
 }
@@ -479,18 +578,18 @@ onBeforeUnmount(() => editor.value?.destroy())
   border: none;
   background: transparent;
   border-radius: 4px;
-  color: #a1a1b5;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.12s;
   flex-shrink: 0;
 }
 .tb-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #e5e5ef;
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 .tb-btn.active {
-  background: rgba(96, 165, 250, 0.18);
-  color: #60a5fa;
+  background: var(--color-active-bg);
+  color: var(--color-active);
 }
 .tb-btn:disabled {
   opacity: 0.3;
