@@ -1,0 +1,145 @@
+/* ===================================================
+ * 主题系统 — CSS 变量定义
+ *
+ * 支持：light / dark / system (跟随系统)
+ * 使用方式：所有组件通过 var(--xxx) 引用颜色
+ * =================================================== */
+
+/* ==================== 亮色主题 ==================== */
+:root,
+[data-theme="light"] {
+  /* 背景 */
+  --bg-app: #f5f5f5;
+  --bg-sidebar: #ffffff;
+  --bg-editor: #ffffff;
+  --bg-toolbar: #1e1e2e;
+  --bg-surface: #ffffff;
+  --bg-hover: #f3f4f6;
+  --bg-active: rgba(59, 130, 246, 0.1);
+  --bg-input: #ffffff;
+  --bg-dropdown: #2d2d3d;
+  --bg-dropdown-hover: rgba(255, 255, 255, 0.08);
+  --bg-modal-overlay: rgba(0, 0, 0, 0.5);
+
+  /* 文字 */
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
+  --text-muted: #9ca3af;
+  --text-inverse: #ffffff;
+  --text-on-toolbar: #a1a1b5;
+  --text-on-toolbar-hover: #e5e5ef;
+  --text-link: #2563eb;
+
+  /* 边框 */
+  --border-default: #e5e7eb;
+  --border-light: #f3f4f6;
+  --border-toolbar: #3f3f5a;
+
+  /* 品牌色 */
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-light: rgba(79, 70, 229, 0.1);
+  --color-accent: #22c55e;
+  --color-accent-hover: #16a34a;
+  --color-danger: #ef4444;
+  --color-active: #60a5fa;
+  --color-active-bg: rgba(96, 165, 250, 0.18);
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-toolbar: 0 2px 12px rgba(0, 0, 0, 0.15);
+
+  /* 滚动条 */
+  --scrollbar-thumb: #d1d5db;
+  --scrollbar-thumb-hover: #9ca3af;
+
+  /* 选区 */
+  --selection-bg: #bfdbfe;
+  --selection-text: #1e3a8a;
+
+  /* 编辑器内容 */
+  --editor-text: #374151;
+  --editor-heading: #111827;
+  --editor-code-bg: #f3f4f6;
+  --editor-code-text: #dc2626;
+  --editor-pre-bg: #1e1e2e;
+  --editor-pre-text: #cdd6f4;
+  --editor-blockquote-border: #6366f1;
+  --editor-blockquote-text: #6b7280;
+  --editor-hr: #e5e7eb;
+  --editor-table-border: #d1d5db;
+  --editor-table-header-bg: #f3f4f6;
+  --editor-cell-selected: rgba(96, 165, 250, 0.12);
+}
+
+/* ==================== 暗色主题 ==================== */
+[data-theme="dark"] {
+  /* 背景 */
+  --bg-app: #1a1a2e;
+  --bg-sidebar: #16162a;
+  --bg-editor: #1e1e32;
+  --bg-toolbar: #12122a;
+  --bg-surface: #242440;
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-active: rgba(96, 165, 250, 0.12);
+  --bg-input: #1e1e32;
+  --bg-dropdown: #242440;
+  --bg-dropdown-hover: rgba(255, 255, 255, 0.08);
+  --bg-modal-overlay: rgba(0, 0, 0, 0.7);
+
+  /* 文字 */
+  --text-primary: #e5e5ef;
+  --text-secondary: #b4b4c8;
+  --text-tertiary: #8888a4;
+  --text-muted: #5e5e78;
+  --text-inverse: #1a1a2e;
+  --text-on-toolbar: #a1a1b5;
+  --text-on-toolbar-hover: #e5e5ef;
+  --text-link: #60a5fa;
+
+  /* 边框 */
+  --border-default: #2e2e4a;
+  --border-light: #242440;
+  --border-toolbar: #3f3f5a;
+
+  /* 品牌色 */
+  --color-primary: #6366f1;
+  --color-primary-hover: #818cf8;
+  --color-primary-light: rgba(99, 102, 241, 0.15);
+  --color-accent: #22c55e;
+  --color-accent-hover: #16a34a;
+  --color-danger: #f87171;
+  --color-active: #60a5fa;
+  --color-active-bg: rgba(96, 165, 250, 0.18);
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shadow-toolbar: 0 2px 12px rgba(0, 0, 0, 0.3);
+
+  /* 滚动条 */
+  --scrollbar-thumb: #3f3f5a;
+  --scrollbar-thumb-hover: #5e5e78;
+
+  /* 选区 */
+  --selection-bg: rgba(96, 165, 250, 0.3);
+  --selection-text: #e5e5ef;
+
+  /* 编辑器内容 */
+  --editor-text: #b4b4c8;
+  --editor-heading: #e5e5ef;
+  --editor-code-bg: #2e2e4a;
+  --editor-code-text: #f87171;
+  --editor-pre-bg: #12122a;
+  --editor-pre-text: #cdd6f4;
+  --editor-blockquote-border: #6366f1;
+  --editor-blockquote-text: #8888a4;
+  --editor-hr: #2e2e4a;
+  --editor-table-border: #2e2e4a;
+  --editor-table-header-bg: #242440;
+  --editor-cell-selected: rgba(96, 165, 250, 0.15);
+}

@@ -15,7 +15,9 @@ import { createPinia } from 'pinia'
 import router from './router'
 import App from './App.vue'
 
-// 引入全局样式（包含 UnoCSS 虚拟模块 + Reset + 基础样式）
+// 引入 UnoCSS 虚拟模块
+import 'virtual:uno.css'
+// 引入全局样式（Reset + 基础样式）
 import './styles/main.css'
 
 // 创建 Vue 应用实例
@@ -43,4 +45,9 @@ async function initAuth() {
 // 先恢复认证状态，再挂载应用
 initAuth().finally(() => {
   app.mount('#app')
+
+  // 初始化主题（需要在 pinia 安装后）
+  import('./stores/theme').then(({ useThemeStore }) => {
+    useThemeStore() // 触发初始化，应用主题到 DOM
+  })
 })

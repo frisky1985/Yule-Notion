@@ -131,6 +131,25 @@ async function handleSubmit() {
     loading.value = false
   }
 }
+
+/**
+ * 演示模式登录（无需后端）
+ */
+function demoLogin() {
+  // 设置演示用户数据
+  authStore.token = 'demo-token'
+  authStore.user = {
+    id: 'demo-user-id',
+    email: 'demo@yule.local',
+    name: '演示用户',
+    createdAt: new Date().toISOString(),
+  }
+  localStorage.setItem('token', 'demo-token')
+  localStorage.setItem('user', JSON.stringify(authStore.user))
+
+  addAlert('success', '演示模式已启动！')
+  router.push('/dashboard')
+}
 </script>
 
 <template>
@@ -240,6 +259,15 @@ async function handleSubmit() {
         <span class="text-xs text-gray-400">或者</span>
         <div class="flex-1 h-px bg-gray-200" />
       </div>
+
+      <!-- 演示模式按钮 -->
+      <button
+        type="button"
+        class="btn-secondary w-full py-2.5 mt-4"
+        @click="demoLogin"
+      >
+        🎮 演示模式（无需登录）
+      </button>
 
       <!-- 注册链接 -->
       <div class="mt-6 text-center">

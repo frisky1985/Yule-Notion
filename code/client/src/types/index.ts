@@ -68,3 +68,33 @@ export interface AlertMessage {
   /** 唯一标识（用于关闭指定消息） */
   id: number
 }
+
+/** 笔记页面 */
+export interface Page {
+  /** 页面唯一标识 */
+  id: string
+  /** 页面标题 */
+  title: string
+  /** 页面内容 (TipTap JSON) */
+  content: Record<string, unknown>
+  /** 父页面ID */
+  parentId?: string
+  /** 排序顺序 */
+  order: number
+  /** 页面图标 */
+  icon: string
+  /** 创建时间 */
+  createdAt: string
+  /** 更新时间 */
+  updatedAt: string
+}
+
+/** 创建笔记参数 */
+export interface CreatePageParams {
+  /** 页面标题 */
+  title: string
+  /** 父页面ID */
+  parentId?: string
+  /** 页面图标 */
+  icon?: string
+}

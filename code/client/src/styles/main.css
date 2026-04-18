@@ -1,20 +1,19 @@
 /* ===================================================
  * 全局样式入口
- * - 引入 UnoCSS 虚拟模块（virtual:uno.css）
  * - 引入 CSS Reset
- * - 全局基础样式
+ * - 引入主题变量
+ * - 全局基础样式（使用 CSS 变量）
  * =================================================== */
-
-/* UnoCSS 虚拟模块 */
-@import 'unocss.css';
 
 /* UnoCSS Reset（normalize） */
 @import '@unocss/reset/tailwind.css';
 
+/* 主题 CSS 变量 */
+@import './theme.css';
+
 /* ===== 全局基础样式 ===== */
 
 body {
-  /* 系统字体栈 */
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -26,28 +25,23 @@ body {
     sans-serif,
     'Apple Color Emoji',
     'Segoe UI Emoji';
-  /* 抗锯齿 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* 基础文字颜色 */
-  color: #1f2937;
-  /* 浅灰背景（Notion 风格） */
-  background-color: #f9fafb;
+  color: var(--text-primary);
+  background-color: var(--bg-app);
+  transition: background-color 0.2s, color 0.2s;
 }
 
-/* 链接默认样式重置 */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* 选中文字颜色 */
 ::selection {
-  background-color: #bfdbfe;
-  color: #1e3a8a;
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
 }
 
-/* 滚动条美化（WebKit） */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -56,9 +50,15 @@ a {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* 全局过渡 */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0s;
 }

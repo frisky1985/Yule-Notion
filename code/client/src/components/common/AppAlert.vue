@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { AlertType, AlertMessage } from '@/types'
+import type { AlertMessage } from '@/types'
 
 /** 组件属性 */
 interface Props {
