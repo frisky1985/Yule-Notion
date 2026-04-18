@@ -185,6 +185,12 @@ const editor = useEditor({
     }
     checkSlashCommand(ed)
   },
+  onFocus: () => {
+    handleEditorFocus()
+  },
+  onBlur: () => {
+    handleEditorBlur()
+  },
 })
 
 // ==================== 斜杠命令 ====================
@@ -472,11 +478,7 @@ onBeforeUnmount(() => {
 
     <!-- ====== 编辑区 ====== -->
     <div ref="editorContainer" class="editor-scroll-container" @scroll="handleScroll">
-      <EditorContent 
-        :editor="editor"
-        @focus="handleEditorFocus"
-        @blur="handleEditorBlur"
-      />
+      <EditorContent :editor="editor" />
     </div>
 
     <!-- ====== 表格浮动工具栏 ====== -->
