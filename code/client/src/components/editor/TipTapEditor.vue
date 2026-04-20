@@ -28,6 +28,10 @@ import { Table } from '@tiptap/extension-table'
 import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
+import { TipTapAIExtension } from './extensions/TipTapAIExtension'
+import { useAIStore } from '@/stores/ai'
+import AIPanel from '@/components/ai/AIPanel.vue'
+import AICommandPalette from '@/components/ai/AICommandPalette.vue'
 import type { Page } from '@/types'
 import EmojiPicker from './EmojiPicker.vue'
 import LinkDialog from './LinkDialog.vue'
@@ -56,6 +60,10 @@ const slashMenuQuery = ref('')
 const slashMenuPosition = ref({ top: 0, left: 0 })
 const slashMenuRef = ref<InstanceType<typeof SlashCommandMenu> | null>(null)
 const slashStartPos = ref<number | null>(null)
+
+// ==================== AI ====================
+const aiStore = useAIStore()
+const commandPaletteRef = ref<InstanceType<typeof AICommandPalette> | null>(null)
 
 // ==================== Toolbar visibility ====================
 const isToolbarVisible = ref(false)
@@ -101,6 +109,23 @@ function handleToolbarLeave() {
   scheduleHide()
 }
 
+// ==================== AI Handlers ====================
+function handleAIInsert(text: string) {
+  editor.value?.chain().focus().insertAIResponse(text).run()
+}
+
+function handleAIReplace(text: string) {
+  editor.value?.chain().focus().replaceSelectionWithAI(text).run()
+}
+
+function handleAICommand(operation: string, text: string) {
+  if (text) {
+    aiStore.openPanel(operation as any, text)
+  } else {
+    aiStore.openPanel(operation as any)
+  }
+}
+
 function handleScroll() {
   const scrollTop = editorContainer.value?.scrollTop || 0
   if (scrollTop > 100 && isToolbarVisible.value) {
@@ -138,6 +163,15 @@ const editor = useEditor({
     TableRow,
     TableCell,
     TableHeader,
+    TipTapAIExtension.configure({
+      onOpenAI: (operation: string, text: string) => {
+        if (text) {
+          aiStore.openPanel(operation as any || undefined, text)
+        } else {
+          commandPaletteRef.value?.open()
+        }
+      }
+    }),
   ],
   content: props.page?.content || createEmptyContent(),
   editorProps: {
@@ -497,6 +531,18 @@ onBeforeUnmount(() => {
 
     <!-- ====== 链接弹窗 ====== -->
     <LinkDialog :editor="editor" :show="showLinkDialog" @close="showLinkDialog = false" />
+
+    <!-- ====== AI 面板 ====== -->
+    <AIPanel 
+      @insert="handleAIInsert"
+      @replace="handleAIReplace"
+    />
+
+    <!-- ====== AI 命令面板 ====== -->
+    <AICommandPalette 
+      ref="commandPaletteRef"
+      @execute="handleAICommand"
+    />
   </div>
 </template>
 
