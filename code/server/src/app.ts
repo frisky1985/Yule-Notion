@@ -15,6 +15,8 @@ import pinoHttp from 'pino-http';
 import { config } from './config';
 import { errorHandler } from './middleware/errorHandler';
 import { createAuthRouter } from './routes/auth.routes';
+import { aiController } from './controllers/ai.controller';
+import { authMiddleware } from './middleware/auth';
 
 // ============================================================
 // 日志配置
@@ -105,6 +107,12 @@ app.get('/api/v1/health', (_req, res) => {
 
 // 7. 业务路由
 app.use('/api/v1/auth', createAuthRouter());
+
+// AI 路由（需要认证）
+app.post('/api/v1/ai/complete', authMiddleware, aiController.complete.bind(aiController));
+app.post('/api/v1/ai/stream', authMiddleware, aiController.stream.bind(aiController));
+app.get('/api/v1/ai/history', authMiddleware, aiController.getHistory.bind(aiController));
+app.get('/api/v1/ai/cost', authMiddleware, aiController.getMonthlyCost.bind(aiController));
 
 // 8. 404 处理（未匹配到任何路由）
 app.use((_req, res) => {
