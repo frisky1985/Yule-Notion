@@ -33,6 +33,18 @@ const envSchema = z.object({
 
   /** CORS 允许的来源域名（逗号分隔，生产环境必填） */
   ALLOWED_ORIGINS: z.string().optional(),
+
+  /** OpenAI API Key */
+  OPENAI_API_KEY: z.string().optional().default(''),
+
+  /** OpenAI 模型名称 */
+  OPENAI_MODEL: z.string().optional().default('gpt-4o-mini'),
+
+  /** AI 最大生成 Token 数 */
+  AI_MAX_TOKENS: z.coerce.number().optional().default(1000),
+
+  /** AI 温度参数 */
+  AI_TEMPERATURE: z.coerce.number().optional().default(0.7),
 });
 
 /**
@@ -95,6 +107,32 @@ export const config = {
 
   /** CORS 允许的来源域名（生产环境必填） */
   allowedOrigins: env.ALLOWED_ORIGINS ? env.ALLOWED_ORIGINS.split(',') : undefined,
+
+  /** AI 配置 */
+  ai: {
+    /** OpenAI API Key */
+    openaiApiKey: env.OPENAI_API_KEY,
+    /** OpenAI 模型 */
+    openaiModel: env.OPENAI_MODEL,
+    /** 默认模型 */
+    defaultModel: 'gpt-4o-mini',
+    /** 最大 Token 数 */
+    maxTokens: env.AI_MAX_TOKENS,
+    /** 温度参数 */
+    temperature: env.AI_TEMPERATURE,
+    /** 速率限制 */
+    rateLimit: {
+      maxRequestsPerMinute: 10,
+      windowMs: 60 * 1000, // 1 分钟
+    },
+    /** 成本限制 */
+    costLimit: {
+      defaultMonthlyLimit: 10.00, // $10/月
+      alertThresholds: [0.5, 0.8, 1.0], // 50%, 80%, 100%
+    },
+    /** 超时时间（毫秒） */
+    timeout: 30000, // 30 秒
+  },
 } as const;
 
 export type AppConfig = typeof config;
