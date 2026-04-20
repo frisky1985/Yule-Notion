@@ -22,6 +22,7 @@
 - [x] **M3：功能完整** — ✅ 2026-03-19 20:09（v0.3.0，离线同步 + Electron桌面端 + Docker部署）
 - [x] **M4：体验优化+扩展功能** — ✅ 2026-03-20 10:45（v0.4.0，深色主题 + 回收站 + 历史版本 + 响应式 + Emoji + 设置页）
 - [x] **M5：高级编辑体验+稳定性** — ✅ 2026-03-20 20:25（v0.5.0，斜杠菜单+块拖拽+侧边栏拖拽+同步400修复+快捷键面板+撤销重做+图片拖拽缩放）
+- [x] **M6：AI智能笔记本** — ✅ 2026-04-18 10:15（v0.6.0，AI写作助手 + 流式响应 + 上下文感知 + 费用控制 + 操作历史）
 
 ## 文件索引
 - 项目简报：`brief.md`
@@ -32,8 +33,10 @@
 - 数据库DDL：`db/001_init.sql` ✅
 - ER图：`db/ER-DIAGRAM.md` ✅
 - 细化设计：`design/DETAILED-DESIGN-M1.md` ✅
-- 后端代码：`code/server/` ✅ (15文件)
-- 前端代码：`code/client/` ✅ (20文件)
+- AI笔记本设计：`design/AI-NOTEBOOK-DESIGN.md` ✅
+- AI实施计划：`plan/AI-NOTEBOOK-IMPLEMENTATION-PLAN.md` ✅
+- 后端代码：`code/server/` ✅ (21文件)
+- 前端代码：`code/client/` ✅ (26文件)
 - 当前状态：`status.md`（本文件）
 
 ## 评审记录
