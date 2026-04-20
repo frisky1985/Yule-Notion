@@ -168,6 +168,72 @@ export class AppError extends Error {
 }
 
 // ============================================================
+// AI 相关类型
+// ============================================================
+
+/**
+ * AI 操作类型
+ */
+export type AIOperationType = 
+  | 'summarize'
+  | 'rewrite'
+  | 'expand'
+  | 'translate'
+  | 'improveWriting'
+  | 'fixGrammar'
+  | 'continueWriting';
+
+/**
+ * AI 请求接口
+ */
+export interface AIRequest {
+  operation: AIOperationType;
+  text: string;
+  pageId?: string;
+  language?: string; // for translate
+  maxTokens?: number;
+}
+
+/**
+ * AI 响应接口
+ */
+export interface AIResponse {
+  text: string;
+  tokensUsed: number;
+  cost: number;
+  provider: string;
+  model: string;
+}
+
+/**
+ * AI 错误响应接口
+ */
+export interface AIErrorResponse {
+  error: {
+    code: 'RATE_LIMIT_EXCEEDED' | 'COST_LIMIT_REACHED' | 'AI_TIMEOUT' | 'INVALID_REQUEST' | 'API_KEY_MISSING';
+    message: string;
+    retryAfter?: number;
+  };
+}
+
+/**
+ * AI 操作记录接口
+ */
+export interface AIOperationRecord {
+  id: string;
+  userId: string;
+  operationType: AIOperationType;
+  inputText: string;
+  outputText: string;
+  tokensUsed: number;
+  cost: number;
+  provider: string;
+  model: string;
+  pageId?: string;
+  createdAt: Date;
+}
+
+// ============================================================
 // Express 扩展类型
 // ============================================================
 
