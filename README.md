@@ -19,6 +19,7 @@
 - **日志**: Pino
 - **验证**: Zod
 - **安全**: Helmet + CORS + Rate Limiting
+- **AI 服务**: OpenAI API (GPT-4o-mini)
 
 ## 项目结构
 
@@ -113,6 +114,8 @@ npm run migrate:rollback
 - **架构设计**: `arch/ARCHITECTURE.md`
 - **API 规范**: `api-spec/API-SPEC.md`
 - **详细设计**: `design/DETAILED-DESIGN-M1.md`
+- **AI 笔记本设计**: `docs/superpowers/specs/2026-04-18-ai-notebook-design.md`
+- **AI 实现计划**: `docs/superpowers/plans/2026-04-18-ai-notebook-implementation.md`
 
 ## 许可证
 
